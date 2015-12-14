@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-public class BankFileTest {
+public class BankFileAccountListingTest {
 
     @Test
     public void empty_file_should_return_no_account_number() throws Exception {

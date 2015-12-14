@@ -19,7 +19,6 @@ public class BankFile implements AccountListing {
         if (nextNumLine.size() >= 3) {
             final List<String> linesToProcess = nextNumLine.subList(0, 3);
             final List<AsciNumber> numbers = findNumbers(linesToProcess.get(0), linesToProcess.get(1), linesToProcess.get(2));
-            // final AsciNumber number = AsciNumber.matching(linesToProcess);
             getAccountNumbers().add(new AccountNumber(numbers));
         }
     }
