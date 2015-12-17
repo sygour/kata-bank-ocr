@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BankFile implements AccountListing {
-    private final List<AccountNumber> accountNumbers = new ArrayList<AccountNumber>();
+    private final List<AccountNumber> accountNumbers = new ArrayList<>();
 
     public BankFile(String s) throws IOException {
         final InputStream inputStream = getClass().getResourceAsStream(s);
@@ -30,13 +30,14 @@ public class BankFile implements AccountListing {
             final String firstElem = first.substring(begin, begin + 3);
             final String secondElem = second.substring(begin, begin + 3);
             final String thirdElem = third.substring(begin, begin + 3);
-            asciNumbers.add(AsciNumber.matching(firstElem, secondElem, thirdElem));
+            final MatchingSet<AsciNumber> matchings = AsciNumber.matchings(firstElem, secondElem, thirdElem);
+            asciNumbers.add(matchings.getMatch());
         }
         return asciNumbers;
     }
 
     private List<String> readAccountLines(BufferedReader reader) throws IOException {
-        final List<String> nextNumLine = new ArrayList<String>();
+        final List<String> nextNumLine = new ArrayList<>();
 
         while (reader.ready() && nextNumLine.size() < 4) {
             nextNumLine.add(reader.readLine());
