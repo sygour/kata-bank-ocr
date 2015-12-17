@@ -91,4 +91,10 @@ public class AccountNumberTest {
                 AsciNumber.ZERO, AsciNumber.ZERO, AsciNumber.ZERO);
     }
 
+    @Test(expected = NumberFormatException.class)
+    public void illegal_account_should_throw_an_exception_on_checksum() throws Exception {
+        new AccountNumber(Lists.newArrayList(AsciNumber.ONE, AsciNumber.THREE, AsciNumber.FIVE,
+                AsciNumber.ONE, AsciNumber.NINE, AsciNumber.ILLEGAL,
+                AsciNumber.ONE, AsciNumber.ILLEGAL, AsciNumber.ONE)).checksum();
+    }
 }

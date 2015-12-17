@@ -81,4 +81,9 @@ public class BankFileAccountListingTest {
         account_number_should_be_recognised("123456789", "all-numbers.txt");
     }
 
+    @Test
+    public void file_with_unknown_numbers_should_return_question_marks() throws Exception {
+        account_number_should_be_recognised("?????????", "unknown-numbers.txt");
+    }
+
 }
