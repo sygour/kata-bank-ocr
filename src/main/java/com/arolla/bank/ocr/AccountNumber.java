@@ -1,15 +1,18 @@
 package com.arolla.bank.ocr;
 
+import com.google.common.collect.Sets;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class AccountNumber implements Checksumable {
+public class AccountNumber implements Correctable {
 
-    private final List<MatchingSet<AsciNumber>> digits;
+    private final List<MatchingSet<AsciNumber>> matchingSets;
     private final Status status;
 
     public AccountNumber(List<MatchingSet<AsciNumber>> nums) {
-        digits = nums;
+        matchingSets = nums;
         status = Status.fromChecksumable(this);
     }
 
@@ -29,7 +32,7 @@ public class AccountNumber implements Checksumable {
 
     public String getNumber() {
         final StringBuilder stringBuilder = new StringBuilder();
-        for (MatchingSet<AsciNumber> digit : digits) {
+        for (MatchingSet<AsciNumber> digit : matchingSets) {
             stringBuilder.append(digit.getMatch().number());
         }
         return stringBuilder.toString();
@@ -63,5 +66,34 @@ public class AccountNumber implements Checksumable {
             stringBuilder.append(" ").append(status.message);
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public Set<AccountNumber> getCorrections() {
+        final Set<AccountNumber> accountNumbers = Sets.newHashSet();
+        if (getStatus() == Status.OK) {
+            accountNumbers.add(this);
+        } else {
+            final Set<AccountNumber> possibleCorrections = getPossibleCorrections();
+            for (AccountNumber possibleCorrection : possibleCorrections) {
+                if (possibleCorrection.getStatus() == Status.OK) {
+                    accountNumbers.add(possibleCorrection);
+                }
+            }
+        }
+        return accountNumbers;
+    }
+
+    private Set<AccountNumber> getPossibleCorrections() {
+        final Set<AccountNumber> result = Sets.newHashSet();
+        for (MatchingSet<AsciNumber> match : matchingSets) {
+            if (match.getPossibles().isEmpty()) {
+
+            } else {
+
+            }
+        }
+
+        return result;
     }
 }

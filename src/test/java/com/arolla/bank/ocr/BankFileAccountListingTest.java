@@ -1,10 +1,13 @@
 package com.arolla.bank.ocr;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Set;
 
 public class BankFileAccountListingTest {
 
