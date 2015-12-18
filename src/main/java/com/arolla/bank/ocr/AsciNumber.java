@@ -105,4 +105,13 @@ public enum AsciNumber {
     public String number() {
         return String.valueOf(number);
     }
+
+    public static AsciNumber valueOf(char c) {
+        for (AsciNumber asciNumber : values()) {
+            if (asciNumber.number == c) {
+                return asciNumber;
+            }
+        }
+        return ILLEGAL;
+    }
 }

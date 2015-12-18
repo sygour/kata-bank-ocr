@@ -1,36 +1,43 @@
 package com.arolla.bank.ocr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountNumber implements Checksumable {
 
-    private final String number;
+    private final List<MatchingSet<AsciNumber>> digits;
     private final Status status;
 
-    private static String stringFromAsciNumber(List<AsciNumber> nums) {
+    public AccountNumber(List<MatchingSet<AsciNumber>> nums) {
+        digits = nums;
+        status = Status.fromChecksumable(this);
+    }
+
+    public AccountNumber(String nums) {
+        this(getMatchingSets(nums));
+    }
+
+    private static List<MatchingSet<AsciNumber>> getMatchingSets(String nums) {
+        final List<MatchingSet<AsciNumber>> digitList = new ArrayList<>();
+        for (char c : nums.toCharArray()) {
+            final MatchingSet<AsciNumber> matchingSet = new MatchingSet<>();
+            matchingSet.setMatch(AsciNumber.valueOf(c));
+            digitList.add(matchingSet);
+        }
+        return digitList;
+    }
+
+    public String getNumber() {
         final StringBuilder stringBuilder = new StringBuilder();
-        for (final AsciNumber num : nums) {
-            stringBuilder.append(num.number());
+        for (MatchingSet<AsciNumber> digit : digits) {
+            stringBuilder.append(digit.getMatch().number());
         }
         return stringBuilder.toString();
     }
 
-    public AccountNumber(List<AsciNumber> nums) {
-        this(stringFromAsciNumber(nums));
-    }
-
-    public AccountNumber(String nums) {
-        number = nums;
-        status = Status.fromChecksumable(this);
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
     @Override
     public int checksum() {
-        return sum(number, 0) % 11;
+        return sum(getNumber(), 0) % 11;
     }
 
     private static int sum(String string, int iterCount) {
@@ -51,7 +58,7 @@ public class AccountNumber implements Checksumable {
 
     @Override
     public String toString() {
-        final StringBuilder stringBuilder = new StringBuilder(number);
+        final StringBuilder stringBuilder = new StringBuilder(getNumber());
         if (status != Status.OK) {
             stringBuilder.append(" ").append(status.message);
         }

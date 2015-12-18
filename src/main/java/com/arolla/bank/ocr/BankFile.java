@@ -21,20 +21,20 @@ public class BankFile implements AccountListing {
 
         if (nextNumLine.size() >= CHAR_LENGTH) {
             final List<String> linesToProcess = nextNumLine.subList(0, CHAR_LENGTH);
-            final List<AsciNumber> numbers = findNumbers(linesToProcess.get(0), linesToProcess.get(1), linesToProcess.get(2));
+            final List<MatchingSet<AsciNumber>> numbers = findNumbers(linesToProcess.get(0), linesToProcess.get(1), linesToProcess.get(2));
             getAccountNumbers().add(new AccountNumber(numbers));
         }
     }
 
-    private List<AsciNumber> findNumbers(String first, String second, String third) {
-        final List<AsciNumber> asciNumbers = new ArrayList<>();
+    private List<MatchingSet<AsciNumber>> findNumbers(String first, String second, String third) {
+        final List<MatchingSet<AsciNumber>> asciNumbers = new ArrayList<>();
         for (int i = 0; i < LINE_NUMBER_COUNT; i++) {
             final int begin = i * CHAR_LENGTH;
             final String firstElem = first.substring(begin, begin + CHAR_LENGTH);
             final String secondElem = second.substring(begin, begin + CHAR_LENGTH);
             final String thirdElem = third.substring(begin, begin + CHAR_LENGTH);
             final MatchingSet<AsciNumber> matchings = AsciNumber.matchings(firstElem, secondElem, thirdElem);
-            asciNumbers.add(matchings.getMatch());
+            asciNumbers.add(matchings);
         }
         return asciNumbers;
     }
